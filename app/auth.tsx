@@ -49,7 +49,7 @@ export default function AuthScreen() {
         if (address && signature) {
           // Validate the signature on your backend here
           // Then complete the login process
-          // login({ address, signature }); // Fix: Pass the arguments as an object
+          login({ address, signature }); // Fix: Pass the arguments as an object
           router.replace('/(tabs)');
         } else {
           setError('Authentication failed. Missing wallet information.');
@@ -147,8 +147,8 @@ export default function AuthScreen() {
         
         <TouchableOpacity 
           style={styles.metamaskButton}
-          // onPress={handleMetaMaskLogin}
-          onPress={() => router.push('/(tabs)')}
+          onPress={handleMetaMaskLogin}
+          // onPress={() => router.push('/(tabs)')}
           disabled={isLoading}
         >
           {isLoading ? (

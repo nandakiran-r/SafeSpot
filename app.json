@@ -4,7 +4,7 @@
     "slug": "SafeSpot",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/connect.png",
     "scheme": "safespot",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -14,11 +14,24 @@
     "web": {
       "bundler": "metro",
       "output": "single",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/connect.png"
     },
-    "plugins": ["expo-router"],
+    "plugins": [
+      "expo-router"
+    ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "3af9e68f-4eaa-4d52-8250-41fe3ad37c9f"
+      }
+    },
+    "android": {
+      "package": "com.X.SafeSpot"
     }
   }
 }
