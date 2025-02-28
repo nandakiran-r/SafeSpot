@@ -5,8 +5,25 @@ import { useAuth } from '../context/AuthContext';
 import { Shield, AlertCircle } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as WebBrowser from 'expo-web-browser';
+import { WalletConnectModal } from '@walletconnect/modal-react-native';
 
 export default function AuthScreen() {
+
+
+
+  const projectId = '0694604af26d11b2e4f3873710c5907c';
+
+  const providerMetadata = {
+    name: 'SafeSpot',
+    description: 'SafeSpot',
+    url: 'https://safespot.com/',
+    icons: ['https://cloud.reown.com/favicon.ico'],
+    redirect: {
+      native: 'safespot://',
+      universal: 'com.X.SafeSpot',
+    },
+  };
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const { login } = useAuth();
@@ -34,22 +51,22 @@ export default function AuthScreen() {
 
   const handleMetaMaskResponse = (url: string | URL) => {
     if (!url) return;
-    
+
     // Parse the URL to extract authentication data
     // The format would depend on your specific implementation
     // Example: safereport://callback?address=0x123...&signature=0xabc...
-    
+
     try {
       const urlObj = new URL(url);
       if (urlObj.hostname === 'callback') {
         // Extract wallet address from params
         const address = urlObj.searchParams.get('address');
         const signature = urlObj.searchParams.get('signature');
-        
+
         if (address && signature) {
           // Validate the signature on your backend here
           // Then complete the login process
-          login({ address, signature }); // Fix: Pass the arguments as an object
+          // login({ address, signature }); // Fix: Pass the arguments as an object
           router.replace('/(tabs)');
         } else {
           setError('Authentication failed. Missing wallet information.');
@@ -66,24 +83,24 @@ export default function AuthScreen() {
   const handleMetaMaskLogin = async () => {
     setIsLoading(true);
     setError('');
-    
+
     try {
       // Mobile implementation using deep linking
       // Documentation: https://docs.metamask.io/guide/mobile-linking.html
-      
+
       // Create the deep link parameters
       const redirectUrl = encodeURIComponent('https://zamil.me');
-      
+
       // WalletConnect v2 protocol support
       // Using MetaMask's universal links for better reliability across devices
       const metaMaskDeepLink = `https://metamask.app.link/dapp/${redirectUrl}`;
-      
+
       // Alternative direct scheme for older MetaMask versions
       const metaMaskDirectLink = `metamask://dapp?redirect=${redirectUrl}`;
-      
+
       // Try to open MetaMask
       const canOpenMetaMask = await Linking.canOpenURL(metaMaskDirectLink);
-      
+
       if (canOpenMetaMask) {
         // Open MetaMask app directly
         await Linking.openURL(metaMaskDirectLink);
@@ -93,10 +110,10 @@ export default function AuthScreen() {
           await Linking.openURL(metaMaskDeepLink);
         } catch (err) {
           // MetaMask not installed, redirect to app store
-          const storeUrl = Platform.OS === 'ios' 
+          const storeUrl = Platform.OS === 'ios'
             ? 'https://apps.apple.com/us/app/metamask/id1438144202'
             : 'https://play.google.com/store/apps/details?id=io.metamask';
-          
+
           // Ask user if they want to install MetaMask
           Alert.alert(
             'MetaMask Required',
@@ -134,18 +151,22 @@ export default function AuthScreen() {
         <View style={styles.logoContainer}>
           <Shield size={60} color="#FFFFFF" strokeWidth={1.5} />
         </View>
-        
+
         <Text style={styles.title}>SafeReport</Text>
         <Text style={styles.subtitle}>Connect with MetaMask to continue</Text>
-        
+
         {error ? (
           <View style={styles.errorContainer}>
             <AlertCircle size={20} color="#EF4444" />
             <Text style={styles.errorText}>{error}</Text>
           </View>
         ) : null}
-        
-        <TouchableOpacity 
+
+        <WalletConnectModal
+          projectId={projectId}
+          providerMetadata={providerMetadata}
+        />
+        {/* <TouchableOpacity 
           style={styles.metamaskButton}
           onPress={handleMetaMaskLogin}
           // onPress={() => router.push('/(tabs)')}
@@ -161,8 +182,8 @@ export default function AuthScreen() {
               <Text style={styles.metamaskButtonText}>Connect with MetaMask</Text>
             </>
           )}
-        </TouchableOpacity>
-        
+        </TouchableOpacity> */}
+
         <Text style={styles.securityNote}>
           Your identity is protected. We use blockchain technology to ensure your reports remain anonymous while still being verifiable.
         </Text>
