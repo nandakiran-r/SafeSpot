@@ -17,7 +17,7 @@ const pinata = new PinataSDK({
 
 // Connect to Polygon node Infura
 const web3 = new Web3('https://polygon-amoy.infura.io/v3/ff501c3063244b08b92df7162c094209');
-const contractAddress = '0x433dde1a5978b9913cde5665b6ced478ddd30af7';
+const contractAddress = '0x7EF2e0048f5bAeDe046f6BF797943daF4ED8CB47';
 const contractABI = require('./DrugUseReportingABI.json'); // Updated ABI
 const contract = new web3.eth.Contract(contractABI, contractAddress);
 
