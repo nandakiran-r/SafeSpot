@@ -24,6 +24,12 @@ export default function AuthScreen() {
     },
   };
 
+  useEffect(() => {
+    if (address && address?.length > 0){
+      router.push('/(tabs)') 
+    }
+  },[address])
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const { login } = useAuth();
@@ -162,7 +168,7 @@ export default function AuthScreen() {
           </View>
         ) : null}
 
-        {address && <Text>{address}</Text>}
+        {/* {address && <Text>{address}</Text>} */}
 
         <WalletConnectModal
           projectId={projectId}
