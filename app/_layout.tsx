@@ -2,6 +2,24 @@ import { useEffect } from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { AuthProvider } from '../context/AuthContext';
+import {
+  WalletConnectModal,
+  useWalletConnectModal,
+} from '@walletconnect/modal-react-native';
+import { Button } from 'react-native';
+
+const projectId = '0694604af26d11b2e4f3873710c5907c';
+
+const providerMetadata = {
+  name: 'SafeSpot',
+  description: 'SafeSpot',
+  url: 'https://safespot.com/',
+  icons: ['https://cloud.reown.com/favicon.ico'],
+  redirect: {
+    native: 'safespot://',
+    universal: 'com.X.SafeSpot',
+  },
+};
 
 declare global {
   interface Window {
@@ -10,6 +28,16 @@ declare global {
 }
 
 export default function RootLayout() {
+  const { address, open, isConnected, provider } = useWalletConnectModal();
+
+  const handleConnection = () => {
+    if (isConnected) {
+      return provider?.disconnect();
+    }
+
+    return open();
+  };
+
   useEffect(() => {
     window.frameworkReady?.();
   }, []);
@@ -24,6 +52,14 @@ export default function RootLayout() {
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
+      <Button
+        onPress={handleConnection}
+        title={isConnected ? 'Disconnect' : 'Connect'}
+      />
+      <WalletConnectModal
+        projectId={projectId}
+        providerMetadata={providerMetadata}
+      />
     </AuthProvider>
   );
 }
