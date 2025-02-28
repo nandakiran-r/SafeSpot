@@ -14,7 +14,7 @@ declare global {
 }
 
 export default function RootLayout() {
-  const { address, open, isConnected, provider } = useWalletConnectModal();
+  const { open, isConnected, provider } = useWalletConnectModal();
 
   const handleConnection = () => {
     if (isConnected) {

@@ -5,11 +5,11 @@ import { useAuth } from '../context/AuthContext';
 import { Shield, AlertCircle } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as WebBrowser from 'expo-web-browser';
-import { WalletConnectModal } from '@walletconnect/modal-react-native';
+import { useWalletConnectModal, WalletConnectModal } from '@walletconnect/modal-react-native';
 
 export default function AuthScreen() {
 
-
+  const { address } = useWalletConnectModal();
 
   const projectId = '0694604af26d11b2e4f3873710c5907c';
 
@@ -161,6 +161,8 @@ export default function AuthScreen() {
             <Text style={styles.errorText}>{error}</Text>
           </View>
         ) : null}
+
+        {address && <Text>{address}</Text>}
 
         <WalletConnectModal
           projectId={projectId}
